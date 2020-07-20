@@ -8,3 +8,10 @@ CREATE TABLE booktable(
     isbn VARCHAR(255),
    bookshelf VARCHAR(255)
 );
+DROP TABLE IF EXISTS authortb;
+CREATE TABLE authortb(
+    id SERIAL PRIMARY KEY,
+    author VARCHAR(255),
+    info TEXT,
+    booksid VARCHAR(255)
+);

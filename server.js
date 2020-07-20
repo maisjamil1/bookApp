@@ -27,10 +27,28 @@ app.post('/updateForm/:id', updateFormHandler)
 app.put('/update/:id', updateHandler)
 app.delete('/delete/:id', deleteHandler)
 app.post('/sort', sortHandler)
+app.get('/author/:author', authorDetailsHandler)
+app.get('/option', selectBookshelf)/////////////////
 app.use('*', pageNotFoundHandler)
 
 
-
+//______________________________________
+function selectBookshelf(req, res) {
+    const SQL = 'SELECT * FROM booktable;'
+    client.query(SQL).then(results => {
+        let BooksArr = results.rows
+        let BooksSHELF =[];
+         BooksArr.forEach(val => {
+            if(!BooksSHELF.includes(val.bookshelf)){
+                BooksSHELF.push(val.bookshelf)
+               
+            }
+        })
+        console.log(BooksSHELF);
+        res.render('pages/books/option.ejs', { optionss: BooksSHELF })
+    })
+}
+//______________________________________
 
 
 
@@ -140,6 +158,7 @@ function updateFormHandler(req, res) {
     const SQL = 'SELECT * FROM booktable WHERE id=$1;'
     const VALUES = [id]
     client.query(SQL, VALUES).then((results) => {
+        
         res.render('pages/books/edit.ejs', { val: results.rows[0] })
     })
         .catch(err => {
@@ -176,27 +195,64 @@ function deleteHandler(req, res) {
 //_______________________________________________
 function sortHandler(req, res) {
     let sortBY = req.body.sort
-    console.log(sortBY);
+    // console.log(sortBY);
     const SQL = 'SELECT * FROM booktable;'
     client.query(SQL).then(results => {
         let homeArr = results.rows
-        homeArr.sort((a,b)=>{
-        let firtItem = a[sortBY]
-        let secondItem = b[sortBY]
-            firtItem=firtItem.toUpperCase()
-            secondItem=secondItem.toUpperCase()
-       
-        if(firtItem>secondItem){
-            return 1;
-        }else if(firtItem<secondItem){
-            return -1;
-        }else{
-            return 0;
-        }})
-        
+        homeArr.sort((a, b) => {
+            let firtItem = a[sortBY]
+            let secondItem = b[sortBY]
+            firtItem = firtItem.toUpperCase()
+            secondItem = secondItem.toUpperCase()
+
+            if (firtItem > secondItem) {
+                return 1;
+            } else if (firtItem < secondItem) {
+                return -1;
+            } else {
+                return 0;
+            }
+        })
+
 
         res.render('pages/index.ejs', { data: homeArr })
-   
+
+    })
+}
+
+//_______________________________________________
+function authorDetailsHandler(req, res) {
+    const getAuthorBooks = 'SELECT * FROM booktable WHERE author=$1;'
+    const authorName = [req.params.author]
+    client.query(getAuthorBooks, authorName).then(results => {
+        // console.log(results.rows);
+        let AuthorBooksArr = results.rows
+
+        let idAuthorBooks = AuthorBooksArr.map(val => {
+            return val.id
+        })
+        let nameOfBooks = AuthorBooksArr.map(val => {
+            return val.title
+        })
+        // console.log(idAuthorBooks);
+        // console.log(nameOfBooks);
+        const authorSQL = 'INSERT INTO authortb(author,info,booksid)VALUES($1,$2,$3);'
+        const authorVALUES = [req.params.author, nameOfBooks, idAuthorBooks]
+        client.query(authorSQL, authorVALUES).then(results => {
+
+
+            const SQL = 'SELECT * FROM authortb WHERE author=$1;'
+            const VALUES = [req.params.author]
+            client.query(SQL, VALUES).then(results => {
+                // console.log(results.rows[0]);
+
+                res.render('pages/books/authorDetails.ejs', { val: results.rows[0] })
+            })
+
+        })
+
+
+
     })
 }
 

@@ -30,7 +30,8 @@
             <h2><%=val.title%></h2>
         <img src="<%=val.image_url%>" alt="">
         <p>Author:<%=val.author%></p>
-       <a href="/books/<%=val.id%>"> <button>view detalis</button></a>
+       <a href="/books/<%=val.id%>"> <button>view book detalis</button></a>
+       <a href="/author/<%=val.author%>"> <button>view author detalis</button></a>
                 </section>
    <%})%> 
 
@@ -55,7 +56,9 @@
 
 
 
-
+<script>
+    console.log(data);
+</script>
 
 
 </body>
