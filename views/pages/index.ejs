@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link rel="stylesheet" href="./public/styles/style.css">
+</head>
+<body>
+<header><h1>hello world </h1></header>  
+
+<nav>
+    <a href="/searches/new"><li>SEARCH</li></a>
+</nav> 
+
+
+<main>
+    <form action="/sort" method="POST">
+        <input type="radio" name="sort" value="title" >
+        <label for="">sort by title</label>
+        <input type="radio" name="sort" value="author">
+        <label for="">sort by author</label>
+        <button>sort now</button>
+    </form>
+
+
+    <h3 style="color: brown;">count: <%=data.length%></h3>
+    <%data.forEach((val)=>{%> 
+        <section>
+            <h2><%=val.title%></h2>
+        <img src="<%=val.image_url%>" alt="">
+        <p>Author:<%=val.author%></p>
+       <a href="/books/<%=val.id%>"> <button>view detalis</button></a>
+                </section>
+   <%})%> 
+
+
+
+
+
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

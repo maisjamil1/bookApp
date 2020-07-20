@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <nav>
+        <a href="/">
+            <h3>home</h3>
+        </a>
+
+    </nav>
+    <section>
+        <h2><%=val.title%></h2>
+        <img src="<%=val.image_url%>" alt="">
+        <p><%=val.author%></p>
+        <p><%=val.description%></p>
+        <p><%=val.isbn%></p>
+        <p style="color: darkblue;"><%=val.bookshelf||'_'%></p>
+    </section>
+    <form action="/updateForm/<%=val.id%>" method="POST">
+        <button>update</button>
+    </form>
+    <form action="/delete/<%=val.id%>?_method=DELETE" method="POST">
+        <button>DELETE</button>
+    </form>
+
+</body>
+
+</html>
